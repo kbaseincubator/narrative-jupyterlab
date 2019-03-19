@@ -75,3 +75,37 @@ c.NotebookApp.extra_static_paths = [os.path.join(myfile, 'static')]
 Really, this sets the login/logout tornado handlers, and the contents manager. Everything else is managed by importing parts of the biokbase package.
 
 Jupyterlab is really the "lab" extension on the jupyter backbone. It includes some server-side stuff, but it's mainly the front end rewrite. So jupyterlab extensions modify the frontend almost exclusively. Jupyter serverextensions are still a separate beast, and we could possibly port our things over to that. But at first glance, just tinkering with config files seems to be enough to get things started.
+
+### Auth
+We use our own authentication stuff. So we don't need the Jupyter auth as described here:
+https://jupyter-notebook.readthedocs.io/en/stable/security.html
+
+They use:
+* token based auth in the `_xsrf` cookie on every request from the browser to the server. Fails if not present. This gets generated on startup and logged to the terminal (and embedded in the browser if you start the application with a new browser window being opened)
+    * Use the /?token=blahblahblah url parameter to make this happen
+* optional password based auth - the `jupyter notebook password` command will prompt for a pw and store the hashed version in `jupyter_notebook_config.json`
+    * Now you need the password on startup, compares against the hash, and gates things that way.
+
+We use:
+* token based auth in the `kbase_session` cookie. Otherwise, it's the same.
+* Call the `/login` input on startup/page reload - this creates the server-side KBase session environment object.
+    * and (headslap) is probably why fails were happening when bringing the kernel back up.
+* There seems to be some funkiness with that particular token and how it interacts with our code stack.
+
+Can disable the built-in Jupyter auth with a `jupyter_notebook_config.py` change: 
+```
+c.NotebookApp.token = ''
+c.NotebookApp.password = ''
+```
+Otherwise most authenticated api calls fail.
+
+Options
+1. Add a hook that calls /login on page load, again, this time as part of an extension
+    + Similar behavior to before, can likely use similar code.
+    - Same problems as before.
+    - Probably a race condition.
+    - Before, we were mixing up concerns - the session environment was just dumping the token to an env var anyway.
+2. Add a server extension that inits the session on server start, where the token is either an env var, or a parameter.
+    + Avoids race condition, explicitly starts up with server before user sees anything.
+    + The main point of maintaining the session was to keep the token locked in an env var. This does so explicitly.
+    - Might be a security issue? Need to be careful with logs.
