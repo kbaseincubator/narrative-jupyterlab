@@ -1,3 +1,8 @@
+.DS_Store
+kbase-extension/ipython/profile_default/history.sqlite
+kbase-extension/ipython/profile_default/startup/README
+install.log
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,3 +107,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+node_modules/
+bower_components/
