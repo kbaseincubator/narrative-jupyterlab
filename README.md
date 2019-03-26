@@ -3,6 +3,20 @@ Research and prototyping KBase extensions in Jupyterlab
 
 First, install anaconda/miniconda, make an environment, and install jupyterlab
 
+# Simple build of lab narrative
+```
+# make a narrative/jupyterlab conda environment
+conda create -n narrative-jlab-env  
+# activate it
+source activate narrative-jlab-env
+# run the installer
+./scripts/install_narrative.sh
+# run the app
+kbase-narrative-lab
+```
+
+
+
 ```
 conda create -n jlab-ext
 conda activate jlab-ext
