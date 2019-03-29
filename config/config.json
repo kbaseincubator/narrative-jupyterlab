@@ -1,0 +1,6 @@
+{
+    "urls": {
+        "auth": "https://kbase.us/services/auth",
+        "workspace": "https://kbase.us/services/ws"
+    }
+}
