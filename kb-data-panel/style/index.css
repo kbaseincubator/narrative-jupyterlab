@@ -3,3 +3,9 @@
     flex-direction: column;
     overflow: auto;
 }
+
+.kb-dataPanel-list {
+    background: #FFF;
+    height: 100%;
+    overflow-y: auto;
+}
