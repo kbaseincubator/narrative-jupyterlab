@@ -8,7 +8,7 @@ export interface IDataCardProps extends React.Props<DataCard> {
 export class DataCard extends React.Component<IDataCardProps, {}> {
     render() {
         return (
-            <div>this.props.objInfo[0] - this.props.objInfo[1]</div>
+            <div>{this.props.objInfo[0]} - {this.props.objInfo[1]}</div>
         );
     }
 }
