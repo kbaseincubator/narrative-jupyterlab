@@ -1,125 +1,184 @@
 # narrative-jupyterlab
 Research and prototyping KBase extensions in Jupyterlab
 
-First, install anaconda/miniconda, make an environment, and install jupyterlab
+## Developer installation and running
 
-# Simple build of lab narrative
-```
+### 0. Prerequisites
+Install these:
+* [Anaconda or Miniconda](https://www.anaconda.com) for the environment manager.
+* [NodeJS](https://nodejs.org) for running builds, installs, etc.
+
+### 1. Installation
+You're best off building a conda environment and installing into it. There's a KBase-ish installer script, so run that, too.
+```Python
 # make a narrative/jupyterlab conda environment
-conda create -n narrative-jlab-env  
+> conda create -n narrative-jlab-env  
 # activate it
-source activate narrative-jlab-env
+> source activate narrative-jlab-env
 # run the installer
-./scripts/install_narrative.sh
-# run the app
-kbase-narrative-lab
+> ./scripts/install_narrative.sh
 ```
 
+### 2. Run The Jupyterlab Narrative
+```Python
+# With your conda environment active...
+> kbase-narrative-lab
 
+# That will run unauthenticated. To add authentication:
+> export KB_AUTH_TOKEN=<REDACTED>
+> kbase-narrative-lab
 
-```
-conda create -n jlab-ext
-conda activate jlab-ext
-conda install -c conda-forge jupyterlab cookiecutter
-```
-
-## Notes
-From [Jupyterlab readthedocs](https://jupyterlab.readthedocs.io/en/stable/developer/extension_dev.html)
-### Extensions
-Types:
-* Application plugin (adds to command palette, modifies browser environment, etc.)
-* Mime renderer extension (renders mime data and/or files of a given type -- maybe useful for data objects?)
-* Theme extension - customize look and feel
-* Document widget extensions (lower level) - extend functionality of document widgets added to the app -- covered [here](https://jupyterlab.readthedocs.io/en/stable/developer/documents.html#documents)
-
-Tutorial (for front end...) [XKCD extension](https://jupyterlab.readthedocs.io/en/stable/developer/xkcd_extension_tutorial.html) (**following notes mostly have to do with that tutorial**)
-
-Easy start - use `cookiecutter` to init an extension directory:
-```
-cookiecutter https://github.com/jupyterlab/extension-cookiecutter-ts
+# We're putting tokens straight into the environment, or so's the plan when running on the server.
 ```
 
-This sets up the directory and initializes package.json with relevant info.
+This also accepts any other flags to pass to the jupyter lab environment. I.e. `kbase-narrative-lab --watch` will run in "watch" mode, which is occasionally helpful for developing.
 
-Go into new directory and:
-```
-jlpm install  # (comes bundled with jupyterlab)
-jupyter labextension install . --no-build
-jupyter lab --watch
-```
+The rest of this document assumes that your environment is active and happy and you can run Narrative-jupyterlab. If it's not, then good luck!
 
-The last line sets up a directory watch and recompiles and installs and keeps your changes up to date.
-
-Using `jlpm` for developing:  
-`jlpm` is really just a Jupyter-installed `yarn` version.
-Use them synonymously, if you have `yarn` installed globally.
-
-Next, go through the tutorial further, throw in some code.
-
-To rebuild:
+### 3. Building a shiny new extension
+1. Install the cookiecutter program. It's neat and builds a tiny local environment for your extension.
 ```
-jlpm run build
-```
-having `jupyter lab --watch` in another terminal will keep it updated with extension changes.
-You can have changes auto build with
-```
-jlpm run watch
+> conda install -c conda-forge cookiecutter
 ```
 
-So now, there's two dedicated sessions - one to keep building the extension, and one to keep building jupyterlab.
-
-
-## On server-side extensions
-The current Narrative sets its extensions by config.  
-specifically (in `jupyter_notebook_config.py`):
+2. Run cookiecutter to build a directory. This is for an Application Extension (not a MIME renderer or theme extension. See [Jupyterlab readthedocs](https://jupyterlab.readthedocs.io/en/stable/developer/extension_dev.html) for more detail). I think most of what we'll be making will be Application extensions.  
 ```
-c = get_config()
-c.NotebookApp.ip = 'localhost'
-c.NotebookApp.port = 8888
-c.NotebookApp.server_extensions = ['biokbase.narrative.handlers.narrativehandler']
-c.NotebookApp.contents_manager_class = 'biokbase.narrative.contents.kbasewsmanager.KBaseWSManager'
-c.NotebookApp.login_handler_class = 'biokbase.narrative.handlers.authhandlers.KBaseLoginHandler'
-c.NotebookApp.logout_handler_class = 'biokbase.narrative.handlers.authhandlers.KBaseLogoutHandler'
-c.NotebookApp.tornado_settings = { 'compress_response': True }
-c.NotebookApp.cookie_secret_file = '/tmp/notebook_cookie'
-myfile = os.path.dirname(__file__) # more or less
-c.NotebookApp.extra_static_paths = [os.path.join(myfile, 'static')]
+> cookiecutter https://github.com/jupyterlab/extension-cookiecutter-ts
+```  
+This will walk you through a number of prompts that'll result in a new extension. They look like this:  
+```
+author_name []:
+extension_name [myextension]:
+project_short_description [A JupyterLab extension.]:
+repository [https://github.com/my_name/myextension]:
+```  
+Mostly, they're used to set up metadata in `package.json`. But be sure to give a useful extension name. I've been namespacing them under `kb-` (e.g. `kb-data-panel`) in case there's conflict issues.
+
+3. Edit `index.ts`  
+This is your extension entrypoint. It lives in `<extension name>/src/index.ts`, and looks like this:
+
+```Typescript
+import {
+  JupyterLab, JupyterLabPlugin
+} from '@jupyterlab/application';
+
+import '../style/index.css';
+
+
+/**
+ * Initialization data for the myextension extension.
+ */
+const extension: JupyterLabPlugin<void> = {
+  id: 'myextension',
+  autoStart: true,
+  activate: (app: JupyterLab) => {
+    console.log('JupyterLab extension myextension is activated!');
+  }
+};
+
+export default extension;
 ```
 
-Really, this sets the login/logout tornado handlers, and the contents manager. Everything else is managed by importing parts of the biokbase package.
+Each extension needs default export from that module. To be a JupyterLabPlugin, it needs the following:
+* `id` - some unique name for the extension (hence the KBase namespacing)
+* `autoStart` - boolean, if true, then the `activate` function gets run right away
+* `activate` - a function that starts up the extension. You can add other required variables there, too.
+* `requires` - (optional, not shown by default) - a list of interfaces that the extension requires. The `XKCD comic` example creates a new Command, and uses the Layout Restorer, so it requires both of these. These also get passed along to the `activate` function, like so:
 
-Jupyterlab is really the "lab" extension on the jupyter backbone. It includes some server-side stuff, but it's mainly the front end rewrite. So jupyterlab extensions modify the frontend almost exclusively. Jupyter serverextensions are still a separate beast, and we could possibly port our things over to that. But at first glance, just tinkering with config files seems to be enough to get things started.
-
-### Auth
-We use our own authentication stuff. So we don't need the Jupyter auth as described here:
-https://jupyter-notebook.readthedocs.io/en/stable/security.html
-
-They use:
-* token based auth in the `_xsrf` cookie on every request from the browser to the server. Fails if not present. This gets generated on startup and logged to the terminal (and embedded in the browser if you start the application with a new browser window being opened)
-    * Use the /?token=blahblahblah url parameter to make this happen
-* optional password based auth - the `jupyter notebook password` command will prompt for a pw and store the hashed version in `jupyter_notebook_config.json`
-    * Now you need the password on startup, compares against the hash, and gates things that way.
-
-We use:
-* token based auth in the `kbase_session` cookie. Otherwise, it's the same.
-* Call the `/login` input on startup/page reload - this creates the server-side KBase session environment object.
-    * and (headslap) is probably why fails were happening when bringing the kernel back up.
-* There seems to be some funkiness with that particular token and how it interacts with our code stack.
-
-Can disable the built-in Jupyter auth with a `jupyter_notebook_config.py` change: 
+```Typescript
+const extension: JupyterLabPlugin<void> = {
+    id: 'myextension',
+    autoStart: true,
+    requires: [ICommandPalette, ILayoutRestorer],
+    activate: (app: JupyterLab, command: ICommandPalette, layoutRestorer: ILayoutRestorer) {
+        ...etc.
+    }
+}
 ```
-c.NotebookApp.token = ''
-c.NotebookApp.password = ''
-```
-Otherwise most authenticated api calls fail.
 
-Options
-1. Add a hook that calls /login on page load, again, this time as part of an extension
-    + Similar behavior to before, can likely use similar code.
-    - Same problems as before.
-    - Probably a race condition.
-    - Before, we were mixing up concerns - the session environment was just dumping the token to an env var anyway.
-2. Add a server extension that inits the session on server start, where the token is either an env var, or a parameter.
-    + Avoids race condition, explicitly starts up with server before user sees anything.
-    + The main point of maintaining the session was to keep the token locked in an env var. This does so explicitly.
-    - Might be a security issue? Need to be careful with logs.
+### 4. Installing and building your extension.
+
+There's two steps to extension building. Installation into the Jupyterlab environment, and building with an npm script.
+
+Jupyterlab is packaged with a wrapper around `yarn` called `jlpm` (yeah, I know. you can also just run `npm` or `yarn` directly, but I think this does a few extra environmental things easier).
+
+**Add packages**:
+```
+> jlpm add <some NPM module>
+```
+pretty much like `yarn add XYZ`. You'll use this for the various Jupyterlab components, and React and ReactDOM (see below).
+
+**Installation**:  
+From inside your extension directory
+```
+> jupyter labextension install . --no-build
+```
+This links things together and tells Jupyterlab that you have a new extension
+
+**Building/rebuilding**:  
+Also inside your extension directory
+```
+> jlpm run build
+```
+
+**Restart Jupyterlab to see extension changes**  
+Or start it with `kbase-narrative-lab --watch` and it should automatically rebuild around any changes to extensions. Sometimes it throws a 404 on reload, though, and the only way I've found to fix that is to stop and restart the server.
+
+You can also use
+```
+> jlpm run watch
+```
+in your extension directory to have it auto-rebuild on each change to your extension. That's also very spotty for me, and isn't shy about throwing errors, which propagate up to the app, especially if that's in watch mode.
+
+
+### 5. Building an extension with ReactJS
+This is tricky and requires a little modification to the `package.json` file in your extension.
+
+First, install React and ReactDOM.
+```
+> jlpm add react react-dom 
+> jlpm add -D @types/react @types/react-dom
+```
+
+Next, there needs to be a "resolutions" block in `package.json` to tell the compiler to use a specific set of TypeScript types to resolve any conflicts. Your `package.json` should look something like this:
+
+```json
+{
+    ... stuff above ...
+    "dependencies": {
+        "@jupyterlab/application": "some_version",
+        "@jupyterlab/apputils": "some_version",
+        "react": "some_version",
+        "react-dom": "some_version"
+    },
+    "devDependencies": {
+        "@types/react": "some_version",
+        "@types/react-dom": "some_version",
+        "rimraf": "some_version",
+        "typescript": "some_version"
+    },
+    "resolutions": {
+        "@types/react": "some_version"
+    }
+    ... stuff below ...
+}
+```
+
+Now, update your `tsconfig.json` to have `"jsx": "react"` under its `compilerOptions` block:
+
+```json
+{
+  "compilerOptions": {
+    ... stuff there by default ...
+    "jsx": "react"
+  },
+  "include": ["src/*"]
+}
+```
+And that's it for compiling. For actually writing code, you're on your own. But see `kb-data-panel` to get started, maybe?
+
+**NOTE:** this is all up in the air and volatile. There's an issue from January [#5875](https://github.com/jupyterlab/jupyterlab/issues/5875) that talks about React best practices in Jupyterlab. It doesn't seem resolved, and it references [#5792](https://github.com/jupyterlab/jupyterlab/issues/5792), which discusses some refactoring to better support React.
+
+There *is* a ReactComponent Widget extension that should play nice with the rest of Jupyterlab, but it seems in progress, and it's not published on the conda-forge installation of Jupyterlab. I think it's only available when building from source on the master branch of their repo.
+
+But once the above steps are taken, you can use `ReactDOM.render` directly, and it seems ok. There's examples of other extensions out in the world that do that already, like the [Plotly chart editor](https://github.com/plotly/jupyterlab-chart-editor/blob/master/src/index.tsx).

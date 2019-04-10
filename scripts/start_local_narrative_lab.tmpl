@@ -10,4 +10,4 @@ CFGDIR=$JUPYTER_CONFIG_DIR/static/kbase
 
 cp $NARRATIVE_DIR/src/config.json $JUPYTER_CONFIG_DIR/static/kbase/config/config.json
 
-jupyter lab --NotebookApp.base_url=/narrative "$@"
+jupyter lab --NotebookApp.base_url=/narrative $@

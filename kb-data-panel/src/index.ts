@@ -5,7 +5,6 @@ import {
 } from '@jupyterlab/application';
 
 import {
-  // showErrorMessage,
   Toolbar,
   ToolbarButton
 } from '@jupyterlab/apputils';
@@ -70,6 +69,7 @@ class DataPanel extends Widget {
 const extension: JupyterLabPlugin<void> = {
   id: 'kb-data-panel',
   autoStart: true,
+  requires: [ICommandPalette, ILayoutRestorer],
   activate: (app: JupyterLab,
              palette: ICommandPalette,
              restorer: ILayoutRestorer) => {
