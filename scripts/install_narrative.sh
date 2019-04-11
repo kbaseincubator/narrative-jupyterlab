@@ -191,9 +191,9 @@ then
     jupyter nbextension enable --py --sys-prefix widgetsnbextension
     log "Done installing nbextensions"
 
-    jupyter labextension install kb-app-panel/ --no-build
-    jupyter labextension install kb-data-panel/ --no-build
-    jupyter labextension install kbase-cell-proto/ --no-build
+    jupyter labextension install ./kb-app-panel --no-build
+    jupyter labextension install ./kb-data-panel --no-build
+    jupyter labextension install ./kbase-cell-proto --no-build
 fi
 
 log "Done. Run the narrative with the command: $SCRIPT_TGT"
