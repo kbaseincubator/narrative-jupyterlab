@@ -41,6 +41,7 @@ export class KBaseContentFactory extends NotebookPanel.ContentFactory {
     // make a new content factory for App Cells?
     // use it here for the Code Cell.
     let cell = new CodeCell(options);
+    console.log('LET THERE BE A CODE CELL!');
 
     return cell;
   }
@@ -51,6 +52,7 @@ export class KBaseContentFactory extends NotebookPanel.ContentFactory {
     }
 
     let cell = new CodeCell(options);
+    alert('LET THERE BE AN APP CELL!');
     return cell;
   }
 };
