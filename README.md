@@ -3,6 +3,17 @@ Research and prototyping KBase extensions in Jupyterlab
 
 ## Developer installation and running
 
+## ISSUE:
+The extensions in the repo don't want to install with the install script. Not sure why, yet.
+After installation, run these lines from a shell prompt inside your repo directory:
+
+```
+jupyter labextension install ./kb-app-panel --no-build
+jupyter labextension install ./kb-data-panel --no-build
+jupyter labextension install ./kbase-cell-proto --no-build
+```
+
+
 ### 0. Prerequisites
 Install these:
 * [Anaconda or Miniconda](https://www.anaconda.com) for the environment manager.
