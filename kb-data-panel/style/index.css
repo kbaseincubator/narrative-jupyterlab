@@ -8,4 +8,95 @@
     background: #FFF;
     height: 100%;
     overflow-y: auto;
+    min-width: 380px;
+}
+
+.kb-data-card {
+    margin: 0.1em;
+}
+
+.kb-card-icon {
+    margin-left: 0.3em;
+    margin-right: 0.2em;
+}
+
+.kb-data-card-main {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: none;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.kb-data-card-info {
+    white-space: nowrap;
+}
+
+.kb-card-ellipsis {
+    margin-left: auto;
+    justify-content: center;
+}
+
+
+/* card layout */
+
+.narrative-card-logo{
+    display: flex;
+    width: 50px;
+    margin-right: 2px;
+}
+
+.narrative-card-row-main{
+    display: flex;
+    align-items: center;
+    width:98%;
+    margin:0px 2px;
+    padding:0px 4px;
+}
+
+.narrative-data-list-subcontent{
+    padding-left :10px;
+}
+
+.narrative-card-ellipsis{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:20px;
+}
+
+.narrative-card-palette-icon{
+    position: relative;
+    color: '#888';
+    left: 15px;
+    top: -50px;
+}
+
+.narrative-card-action-button-wrapper{
+    width: 80px;
+    height: 50px;
+    margin: 0px 10px;
+}
+
+.narrative-card-action-button{
+    width: calc(100% - 6px);
+    height: 80%;
+    display: flex;
+    padding: 0px;
+    justify-content: center;
+}
+
+.narrative-card-action-button > span{
+    margin-right: 5px;
+}
+.narrative-card-action-button-name{
+    display: inline-block;
+}
+.narrative-data-panel-btnToolbar > span{
+    color: #888;
+}
+.narrative-data-panel-btnToolbar{
+    display: flex;
+    justify-content: center;
 }

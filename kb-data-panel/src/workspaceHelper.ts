@@ -4,7 +4,7 @@ export interface WorkspaceObjectInfo {
     1: string;  // obj name
     2: string;  // obj type
     3: string;  // timestamp
-    4: number;  // obj id
+    4: number;  // obj ver
     5: string;  // user who last saved
     6: number;  // ws id
     7: string;  // ws name

@@ -19,7 +19,7 @@ class AppPanelWidget extends Widget {
     this.addClass('kb-appPanel');
     console.log("trying to render app panel");
 
-    ReactDOM.render(<div>wat</div>, this.node);
+    ReactDOM.render(<div>KBase apps will go here eventually.</div>, this.node);
     console.log("done?");
   }
 }
