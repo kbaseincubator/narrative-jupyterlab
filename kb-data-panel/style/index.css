@@ -13,6 +13,21 @@
 
 .kb-data-card {
     margin: 0.1em;
+    transition: all 0.1s ease;
+    border-left-style: solid;
+    border-left-width: 5px;
+    border-left-color: #fff;
+    color: #333;
+    box-shadow: 1px 1px 1px 1px #fff;
+    -webkit-box-shadow: 1px 1px 1px 1px #fff;
+    -moz-box-shadow: 1px 1px 1px 1px #fff;
+}
+
+.kb-data-card:hover {
+    border-left-color: #4BB856;
+    box-shadow: 1px 1px 1px 1px #aaa;
+    -webkit-box-shadow: 1px 1px 1px 1px #aaa;
+    -moz-box-shadow: 1px 1px 1px 1px #aaa;
 }
 
 .kb-card-icon {
@@ -27,10 +42,44 @@
     flex-wrap: none;
     align-items: center;
     justify-content: flex-start;
+    font-size: 0.9em;
 }
 
 .kb-data-card-info {
     white-space: nowrap;
+    width: 80%;
+    padding: 6px 0;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.kb-data-card-name {
+    color: #2e618d;
+    font-family: 'Oxygen', Arial, sans-serif;
+    font-weight: bold;
+    margin: 0.1em;
+    cursor: pointer;
+}
+
+.kb-data-card-name:hover {
+    text-decoration: underline;
+}
+
+.kb-data-card-type, .kb-data-card-date {
+    color: #777;
+    font-size: 0.9em;
+    margin: 0.1em;
+}
+
+.kb-data-card-date {
+    white-space: nowrap;
+}
+
+.kb-data-card-version {
+    color: #777;
+    font-size: 0.75em;
+    font-style: italic;
+    white-space: nowrap;
+    margin-left: 0.2em;
 }
 
 .kb-card-ellipsis {
