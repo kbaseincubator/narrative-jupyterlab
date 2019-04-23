@@ -32,7 +32,8 @@
   "dependencies": {
     "@jupyterlab/application": "^0.19.1",
     "@jupyterlab/apputils": "^0.19.1",
-    "@kbase/narrative-utils": "0.0.4",
+    "@kbase/narrative-utils": "https://github.com/kbaseIncubator/narrative-utils",
+    "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },

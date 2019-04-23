@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { WorkspaceObjectInfo } from './workspaceHelper';
 import { DataIcon } from './dataIcon';
+import { TimeFormat } from '@kbase/narrative-utils';
 
 export interface IDataCardProps extends React.Props<DataCard> {
     objInfo: WorkspaceObjectInfo
@@ -8,10 +9,8 @@ export interface IDataCardProps extends React.Props<DataCard> {
 
 export class DataCard extends React.Component<IDataCardProps, {}> {
     render() {
-        // return (
-        //     <div>{this.props.objInfo[0]} - {this.props.objInfo[1]}</div>
-        // );
         let objInfo = this.props.objInfo;
+        let objType = objInfo[2].split('-')[0].split('.')[1];
         return (
             <div className="kb-data-card">
                 <div className="kb-data-card-main">
@@ -21,9 +20,9 @@ export class DataCard extends React.Component<IDataCardProps, {}> {
                             {objInfo[1]}
                             <span className="kb-data-card-version">v{objInfo[4]}</span>
                         </div>
-                        <div className="kb-data-card-type">{objInfo[2]}</div>
+                        <div className="kb-data-card-type">{objType}</div>
                         <div className="kb-data-card-narrative"></div>
-                        <div className="kb-data-card-date">Dec 10, 2018</div>
+                        <div className="kb-data-card-date">{TimeFormat.getTimeStampStr(objInfo[3], false)}</div>
                         <div className="kb-data-card-edit-by"> </div>
                     </div>
                     <div className="kb-card-ellipsis">
