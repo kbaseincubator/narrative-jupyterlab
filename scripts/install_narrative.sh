@@ -105,19 +105,19 @@ then
 
     # Install IPython
     # ---------------
-    log "Installing IPython version $IPYTHON_VERSION"
-    conda install -y ipython==$IPYTHON_VERSION 2>&1 | tee -a ${logfile}
+    # log "Installing IPython version $IPYTHON_VERSION"
+    # conda install -y ipython==$IPYTHON_VERSION 2>&1 | tee -a ${logfile}
 
     # Install Jupyter Notebook
     # ------------------------
-    log "Installing Jupyter notebook version $NOTEBOOK_VERSION"
-    conda install -y notebook==$NOTEBOOK_VERSION 2>&1 | tee -a ${logfile}
+    # log "Installing Jupyter notebook version $NOTEBOOK_VERSION"
+    # conda install -y notebook==$NOTEBOOK_VERSION 2>&1 | tee -a ${logfile}
 
     # Setup ipywidgets addon
-    log "Installing ipywidgets using $PYTHON"
-    conda install -y ipywidgets==$IPYWIDGETS_VERSION 2>&1 | tee -a ${logfile}
+    # log "Installing ipywidgets using $PYTHON"
+    # conda install -y ipywidgets==$IPYWIDGETS_VERSION 2>&1 | tee -a ${logfile}
 
-    conda install -y jupyterlab
+    # conda install -y jupyterlab
 
     # Install Narrative requirements
     # ------------------------------
@@ -184,12 +184,12 @@ then
 
     log "Done installing scripts"
 
-    log "Installing nbextensions"
-    cd nbextensions
-    sh install.sh
-    cd ../..
-    jupyter nbextension enable --py --sys-prefix widgetsnbextension
-    log "Done installing nbextensions"
+    # log "Installing nbextensions"
+    # cd nbextensions
+    # sh install.sh
+    # cd ../..
+    # jupyter nbextension enable --py --sys-prefix widgetsnbextension
+    # log "Done installing nbextensions"
 
     jupyter labextension install ./kb-app-panel --no-build
     jupyter labextension install ./kb-data-panel --no-build

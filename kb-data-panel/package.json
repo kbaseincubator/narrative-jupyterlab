@@ -14,8 +14,8 @@
   "license": "BSD-3-Clause",
   "author": "Bill Riehl",
   "files": [
-    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
-    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
+    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,woff,ttf}",
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,woff,ttf}"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -30,10 +30,9 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^0.19.1",
-    "@jupyterlab/apputils": "^0.19.1",
+    "@jupyterlab/application": "^1.0.0-alpha.3",
+    "@jupyterlab/apputils": "^1.0.0-alpha.3",
     "@kbase/narrative-utils": "https://github.com/kbaseIncubator/narrative-utils",
-    "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
