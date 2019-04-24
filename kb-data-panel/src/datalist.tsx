@@ -56,16 +56,16 @@ export class DataList extends Widget {
             );
             return;
         }
-        const dataCards = data.map(obj => <DataCard objInfo={obj.object_info} />);
+        const dataCards = data.map(obj => {
+            let info = obj.object_info;
+            let upa = info[6] + '/' + info[0] + '/' + info[4];
+            return <DataCard objInfo={info} key={upa}/>;
+        });
         data.forEach(obj => {
-            // let elem = document.createElement('div');
-            // elem.innerText = obj.object_info[1];
-            // this.node.appendChild(elem);
             ReactDOM.render(
                 dataCards,
                 this.node
             );
-            // this.node.appendChild(DataCard(obj.object_info));
         });
     }
 
