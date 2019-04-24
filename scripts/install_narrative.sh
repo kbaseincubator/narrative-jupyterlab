@@ -206,6 +206,7 @@ then
     jupyter labextension install ./kb-app-panel --no-build
     jupyter labextension install ./kb-data-panel --no-build
     jupyter labextension install ./kbase-cell-proto --no-build
+    jupyter lab build
 fi
 
 log "Done. Run the narrative with the command: $SCRIPT_TGT"
