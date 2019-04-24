@@ -103,6 +103,18 @@ then
     log "Installing front end components with bower"
     bower install -V --allow-root --config.interactive=false 2>&1 | tee -a ${logfile}
 
+    # Install jupyter notebook
+    conda install -y -c conda-forge notebook==$NOTEBOOK_VERSION 2>&1 | tee -a ${logfile}
+
+    git clone https://github.com/jupyterlab/jupyterlab.git
+    cd jupyterlab
+    pip install -e .
+    jlpm install
+    jlpm run build
+    jlpm run build:core
+    jupyter lab build
+    cd ..
+
     # Install IPython
     # ---------------
     # log "Installing IPython version $IPYTHON_VERSION"
