@@ -3,6 +3,7 @@ import { WorkspaceObjectInfo } from './workspaceHelper';
 import { DataIcon } from './dataIcon';
 import { TimeFormat } from '@kbase/narrative-utils';
 import { Icon } from '@kbase/narrative-utils';
+import { DataSubArea } from './dataSubArea';
 
 export interface IDataCardProps extends React.Props<DataCard> {
     objInfo: WorkspaceObjectInfo
@@ -34,6 +35,17 @@ export class DataCard extends React.Component<IDataCardProps, {}> {
             icon: iconInfo.className,
             color: iconInfo.color
         }
+        console.log('rendering');
+        let subarea = null;
+        if (this.state.isExpanded) {
+            let subProps = {
+                dataType: objInfo[2],
+                upa: objInfo[6] + '/' + objInfo[0] + '/' + objInfo[4],
+                metadata: objInfo[10]
+            };
+            subarea = <DataSubArea {...subProps}/>;
+        }
+
         return (
             <div className="kb-data-card">
                 <div className="kb-data-card-main">
@@ -55,7 +67,7 @@ export class DataCard extends React.Component<IDataCardProps, {}> {
                         </button>
                     </div>
                 </div>
-                <div style={{display: this.state.isExpanded ? 'block': 'none'}}>I am subcontent. Woo.</div>
+                {subarea}
             </div>
         );
     }
