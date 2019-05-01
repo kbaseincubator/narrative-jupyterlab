@@ -6,7 +6,8 @@ import { Icon } from '@kbase/narrative-utils';
 import { DataSubArea } from './dataSubArea';
 
 export interface IDataCardProps extends React.Props<DataCard> {
-    objInfo: WorkspaceObjectInfo
+    objInfo: WorkspaceObjectInfo,
+    cb: Function
 }
 
 interface IDataCardState {
@@ -14,7 +15,6 @@ interface IDataCardState {
 };
 
 export class DataCard extends React.Component<IDataCardProps, {}> {
-
     state: IDataCardState;
 
     constructor(props: IDataCardProps) {
@@ -24,6 +24,10 @@ export class DataCard extends React.Component<IDataCardProps, {}> {
 
     toggleSubArea = () => {
         this.setState((prevState: IDataCardState) => ({ isExpanded: !prevState.isExpanded }));
+    }
+
+    insertDataCell = () => {
+        this.props.cb(this.props.objInfo[6], this.props.objInfo[0]);
     }
 
     render() {
@@ -51,7 +55,7 @@ export class DataCard extends React.Component<IDataCardProps, {}> {
                 <div className="kb-data-card-main">
                     <DataIcon {...iconProps} />
                     <div className="kb-data-card-info">
-                        <div className="kb-data-card-name">
+                        <div className="kb-data-card-name" onClick={this.insertDataCell}>
                             {objInfo[1]}
                             <span className="kb-data-card-version">v{objInfo[4]}</span>
                         </div>

@@ -48,7 +48,7 @@ class DataPanel extends Widget {
 
     this.toolbar.addItem('refresh', refreshBtn);
 
-    this.datalist = new DataList(null);
+    this.datalist = new DataList(null, nbTracker);
 
     let layout = new PanelLayout();
     layout.addWidget(this.toolbar);
@@ -61,7 +61,6 @@ class DataPanel extends Widget {
       this
     );
     this._onActiveNotebookPanelChanged();
-
   }
 
   _onActiveNotebookPanelChanged() : void {
@@ -99,7 +98,6 @@ const extension: JupyterFrontEndPlugin<void> = {
              restorer: ILayoutRestorer,
              nbTracker: INotebookTracker,
              labShell: ILabShell) => {
-
     let dataPanel: DataPanel = new DataPanel(nbTracker);
     // app.shell.addToLeftArea(dataPanel);
     app.shell.add(dataPanel, 'left');
