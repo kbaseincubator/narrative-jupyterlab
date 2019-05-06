@@ -87,6 +87,26 @@
     justify-content: center; */
 }
 
+.kb-simple-table {
+    width: 100%;
+}
+
+.kb-simple-table tr:nth-child(odd) {
+    background-color: #F5F5F5;
+}
+.kb-simple-table tr {
+    color: #777;
+    font-size: 10pt;
+    margin: 2px;
+}
+.kb-simple-table th {
+    color: #777;
+    font-size: 10pt;
+    font-weight: bold;
+    text-align: right;
+    margin: 2px;
+}
+
 
 /* card layout */
 
