@@ -14,6 +14,10 @@ import {
   PanelLayout
 } from '@phosphor/widgets';
 
+import {
+  AppList
+} from './appList';
+
 import '../style/index.css';
 
 class AppPanelWidget extends Widget {
@@ -25,7 +29,6 @@ class AppPanelWidget extends Widget {
     this.title.label = 'Apps';
     this.title.closable = false;
     this.addClass('kb-appPanel');
-    console.log("start building kb-app-panel");
     this.toolbar = new Toolbar<Widget>();
     let refreshBtn = new ToolbarButton({
       iconClassName: 'fa fa-refresh',
@@ -37,19 +40,21 @@ class AppPanelWidget extends Widget {
     });
 
     this.toolbar.addItem('refresh', refreshBtn);
+    this.applist = new AppList();
 
     let layout = new PanelLayout();
     layout.addWidget(this.toolbar);
+    layout.addWidget(this.applist);
 
     this.layout = layout;
-    console.log("kb-app-panel done?");
   }
 
   refreshApp() : void {
-    console.log("refreshing app");
+    this.applist.refresh();
   }
 
   readonly toolbar: Toolbar<Widget>;
+  readonly applist: AppList;
 }
 
 /**
