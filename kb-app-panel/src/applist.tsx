@@ -6,6 +6,12 @@ import {
     Auth, KBaseDynamicServiceClient
 } from '@kbase/narrative-utils';
 
+import { AppCard } from './appCard';
+
+import { AppObjectInfo } from './appObjectInfoHelper';
+
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 export class AppList extends Widget {
     private currentTag: string;
@@ -18,7 +24,9 @@ export class AppList extends Widget {
     }
 
     refresh() {
+        //TODO: change tag from upper class
         this.currentTag = 'release';
+        //TODO: get userID from narrative-utils.Auth()
         this.userId = 'tgu2';
 
         let auth = new Auth();
@@ -33,13 +41,39 @@ export class AppList extends Widget {
                 'user': this.userId
             }])
             .then((appInfo: any) => {
-                console.log(appInfo.app_infos);
-                console.log(appInfo.module_versions);
+                this.renderData(appInfo.app_infos, appInfo.module_versions);
             })
             .catch(this.handleRefreshError);
     }
 
     handleRefreshError(err: any) {
         console.error(err);
+    }
+
+    renderData(appInfos: {[app_id: string]: {info: AppObjectInfo, favorite: number}},
+               moduleVersions: {[module_name: string]: string}) {
+        if (!appInfos) {
+            //TODO: needs better error handling, maybe retry calling get_all_app_info?
+            ReactDOM.render(
+                <div>No apps available</div>,
+                this.node
+            );
+            return;
+        }
+
+        const appCards = Object.keys(appInfos).map(key => {
+
+            let app_info = appInfos[key];
+            let info = app_info.info;
+            let app_id = info.id;
+            let favorite = app_info.favorite;
+
+            return <AppCard info={info} favorite={favorite} key={app_id}/>;
+        });
+
+        ReactDOM.render(
+            appCards,
+            this.node
+        );
     }
 }
