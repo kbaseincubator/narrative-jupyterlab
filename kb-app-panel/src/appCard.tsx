@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { AppObjectInfo } from './appObjectInfoHelper';
 import { AppSubArea } from './appSubArea';
+import { AppIcon } from './appIcon';
 
 export interface IAppCardProps extends React.Props<AppCard> {
     info: AppObjectInfo,
@@ -31,6 +32,15 @@ export class AppCard extends React.Component<IAppCardProps, {}> {
         let info = this.props.info;
         // let favorite = this.props.favorite;
         console.log(info);
+
+        let icon_url = null;
+        if ( info.hasOwnProperty('icon') ) {
+            icon_url = info.icon.url
+        }
+        let iconProps = {
+            icon_url: icon_url
+        }
+
         let subarea = null;
         if (this.state.isExpanded) {
             let subProps = {
@@ -43,6 +53,7 @@ export class AppCard extends React.Component<IAppCardProps, {}> {
         return (
             <div className="kb-app-card">
                 <div className="kb-app-card-main">
+                    <AppIcon {...iconProps} />
                     <div className="kb-app-card-info">
                         <div className="kb-app-card-name">{info.name}</div>
                         <div className="narrative-data-list-subcontent">

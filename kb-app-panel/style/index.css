@@ -92,3 +92,9 @@
     cursor: pointer;
     font-style: italic;
 }
+
+.kb-app-card-icon{
+    display: flex;
+    width: 50px;
+    margin-right: 2px;
+}
