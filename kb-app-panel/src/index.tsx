@@ -33,13 +33,25 @@ class AppPanelWidget extends Widget {
     let refreshBtn = new ToolbarButton({
       iconClassName: 'fa fa-refresh',
       iconLabel: 'r',
-      tooltip: 'refresh',
+      tooltip: 'Refresh app/method listings',
       onClick: () => {
         this.refreshApp();
       }
     });
 
+    let versionBtn = new ToolbarButton({
+      // iconClassName: 'btn btn-xs btn-default',
+      // iconLabel: 'r',
+      label: 'R',
+      tooltip: 'Toggle between Release/Beta/Dev versions',
+      onClick: () => {
+        // versionBtn.lable = 'B';
+        this.refreshApp();
+      }
+    });
+
     this.toolbar.addItem('refresh', refreshBtn);
+    this.toolbar.addItem('version', versionBtn);
     this.applist = new AppList();
 
     let layout = new PanelLayout();

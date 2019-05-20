@@ -1,3 +1,100 @@
 .kb-appPanel {
-    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.kb-appPanel-list {
+    background: #FFF;
+    height: 100%;
+    overflow-y: auto;
+    min-width: 380px;
+}
+
+
+.kb-app-card {
+    margin: 0.1em;
+    transition: all 0.1s ease;
+    border-left-style: solid;
+    border-left-width: 5px;
+    border-left-color: #fff;
+    color: #333;
+    box-shadow: 1px 1px 1px 1px #fff;
+    -webkit-box-shadow: 1px 1px 1px 1px #fff;
+    -moz-box-shadow: 1px 1px 1px 1px #fff;
+}
+
+.kb-app-card:hover {
+    border-left-color: #4BB856;
+    box-shadow: 1px 1px 1px 1px #aaa;
+    -webkit-box-shadow: 1px 1px 1px 1px #aaa;
+    -moz-box-shadow: 1px 1px 1px 1px #aaa;
+}
+
+.kb-app-card-main {
+    /* width: 100%; */
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: none; */
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.9em;
+}
+
+.kb-app-card-info {
+    white-space: nowrap;
+    width: 80%;
+    padding: 6px 0;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.kb-app-card-name {
+    color: #2e618d;
+    font-family: 'Oxygen', Arial, sans-serif;
+    font-weight: bold;
+    margin: 0.1em;
+    cursor: pointer;
+}
+
+.kb-app-card-name:hover {
+    text-decoration: underline;
+}
+
+.kb-card-ellipsis {
+    /* margin-left: auto;
+    justify-content: center; */
+}
+
+.kb-app-sub-area {
+    color:#777;
+    font-size: 10pt;
+    margin: 2px;
+    text-align: justify;
+}
+
+.kb-app-sub-area > div:last-child {
+    color: #2e618d;
+    text-align: right;
+}
+
+.kb-app-card-version {
+    color: #777;
+    font-size: 10pt;
+    font-style: italic;
+    white-space: nowrap;
+    margin-left: 2px;
+}
+
+.kb-app-card-module-link {
+    color: #2e618d;
+    font-size: 10pt;
+    margin: 2px;
+    cursor: pointer;
+    font-style: italic;
+}
+
+.kb-app-card-icon{
+    display: flex;
+    width: 50px;
+    margin-right: 2px;
 }
