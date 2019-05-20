@@ -1,11 +1,23 @@
 import {
-  JupyterLab, JupyterLabPlugin
+  JupyterFrontEnd,
+  JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-import { Widget } from '@phosphor/widgets';
-import { ICommandPalette } from '@jupyterlab/apputils';
-import { IAppPanel, AppPanelModel } from './appPanel';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+
+import {
+  ICommandPalette,
+  Toolbar,
+  ToolbarButton
+} from '@jupyterlab/apputils';
+
+import {
+  Widget,
+  PanelLayout
+} from '@phosphor/widgets';
+
+import {
+  AppList
+} from './appList';
+
 import '../style/index.css';
 
 class AppPanelWidget extends Widget {
@@ -17,33 +29,47 @@ class AppPanelWidget extends Widget {
     this.title.label = 'Apps';
     this.title.closable = false;
     this.addClass('kb-appPanel');
-    console.log("trying to render app panel");
+    this.toolbar = new Toolbar<Widget>();
+    let refreshBtn = new ToolbarButton({
+      iconClassName: 'fa fa-refresh',
+      iconLabel: 'r',
+      tooltip: 'refresh',
+      onClick: () => {
+        this.refreshApp();
+      }
+    });
 
-    ReactDOM.render(<div>KBase apps will go here eventually.</div>, this.node);
-    console.log("done?");
+    this.toolbar.addItem('refresh', refreshBtn);
+    this.applist = new AppList();
+
+    let layout = new PanelLayout();
+    layout.addWidget(this.toolbar);
+    layout.addWidget(this.applist);
+
+    this.layout = layout;
   }
+
+  refreshApp() : void {
+    this.applist.refresh();
+  }
+
+  readonly toolbar: Toolbar<Widget>;
+  readonly applist: AppList;
 }
 
-function activate(
-  app: JupyterLab,
-  palette: ICommandPalette
-): IAppPanel {
-  const model = new AppPanelModel();
-  let appPanel = new AppPanelWidget({});
-  app.shell.addToLeftArea(appPanel);
-  return model;
-}
-
-// : (app: JupyterLab) => {
-//   console.log('JupyterLab extension kb-app-panel is activated!');
-// }
 /**
  * Initialization data for the kb-app-panel extension.
  */
-const extension: JupyterLabPlugin<IAppPanel> = {
-  activate,
+const extension: JupyterFrontEndPlugin<void> = {
   id: 'kb-app-panel',
   autoStart: true,
+  activate: (app: JupyterFrontEnd,
+             palette: ICommandPalette) => {
+    let appPanel: AppPanelWidget = new AppPanelWidget({});
+    app.shell.add(appPanel, 'left');
+
+    console.log('JupyterLab extension kb-app-panel is activated!');
+  }
 };
 
 export default extension;
