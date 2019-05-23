@@ -7,7 +7,8 @@ import { AppIcon } from './appIcon';
 
 export interface IAppCardProps extends React.Props<AppCard> {
     info: AppObjectInfo,
-    favorite: number
+    favorite: number,
+    cb: Function
 }
 
 interface IAppCardState {
@@ -25,6 +26,10 @@ export class AppCard extends React.Component<IAppCardProps, {}> {
 
     toggleSubArea = () => {
         this.setState((prevState: IAppCardState) => ({ isExpanded: !prevState.isExpanded }));
+    }
+
+    insertAppCell = () => {
+        this.props.cb(this.props.info.id);
     }
 
     render() {
@@ -55,7 +60,7 @@ export class AppCard extends React.Component<IAppCardProps, {}> {
                 <div className="kb-app-card-main">
                     <AppIcon {...iconProps} />
                     <div className="kb-app-card-info">
-                        <div className="kb-app-card-name">{info.name}</div>
+                        <div className="kb-app-card-name" onClick={this.insertAppCell}>{info.name}</div>
                         <div className="narrative-data-list-subcontent">
                             <span><i className="fa fa-star kbcb-star-default kbcb-star-favorite" data-original-title="" title="">&nbsp;</i></span>
                             <span className="kb-app-card-module-link"><a href={module_link} target="_blank">{info.module_name}</a>
