@@ -30,8 +30,8 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^0.19.1",
-    "@jupyterlab/notebook": "^0.19.2"
+    "@jupyterlab/application": "^1.0.0-alpha.3",
+    "@jupyterlab/notebook": "^1.0.0-alpha.3"
   },
   "devDependencies": {
     "rimraf": "^2.6.1",
