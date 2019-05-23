@@ -3,71 +3,12 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-import {
-  ICommandPalette,
-  Toolbar,
-  ToolbarButton
-} from '@jupyterlab/apputils';
 
-import {
-  Widget,
-  PanelLayout
-} from '@phosphor/widgets';
+import { INotebookTracker } from '@jupyterlab/notebook';
 
-import {
-  AppList
-} from './appList';
+import { ICommandPalette} from '@jupyterlab/apputils';
 
-import '../style/index.css';
-
-class AppPanelWidget extends Widget {
-
-  constructor(options: Widget.IOptions) {
-    super(options);
-
-    this.id = 'kb-app-panel';
-    this.title.label = 'Apps';
-    this.title.closable = false;
-    this.addClass('kb-appPanel');
-    this.toolbar = new Toolbar<Widget>();
-    let refreshBtn = new ToolbarButton({
-      iconClassName: 'fa fa-refresh',
-      iconLabel: 'r',
-      tooltip: 'Refresh app/method listings',
-      onClick: () => {
-        this.refreshApp();
-      }
-    });
-
-    let versionBtn = new ToolbarButton({
-      // iconClassName: 'btn btn-xs btn-default',
-      // iconLabel: 'r',
-      label: 'R',
-      tooltip: 'Toggle between Release/Beta/Dev versions',
-      onClick: () => {
-        // versionBtn.lable = 'B';
-        this.refreshApp();
-      }
-    });
-
-    this.toolbar.addItem('refresh', refreshBtn);
-    this.toolbar.addItem('version', versionBtn);
-    this.applist = new AppList();
-
-    let layout = new PanelLayout();
-    layout.addWidget(this.toolbar);
-    layout.addWidget(this.applist);
-
-    this.layout = layout;
-  }
-
-  refreshApp() : void {
-    this.applist.refresh();
-  }
-
-  readonly toolbar: Toolbar<Widget>;
-  readonly applist: AppList;
-}
+import { AppPanel } from './appPanel';
 
 /**
  * Initialization data for the kb-app-panel extension.
@@ -75,9 +16,11 @@ class AppPanelWidget extends Widget {
 const extension: JupyterFrontEndPlugin<void> = {
   id: 'kb-app-panel',
   autoStart: true,
+  requires: [ICommandPalette, INotebookTracker],
   activate: (app: JupyterFrontEnd,
-             palette: ICommandPalette) => {
-    let appPanel: AppPanelWidget = new AppPanelWidget({});
+             palette: ICommandPalette,
+             nbTracker: INotebookTracker) => {
+    let appPanel: AppPanel = new AppPanel(nbTracker);
     app.shell.add(appPanel, 'left');
 
     console.log('JupyterLab extension kb-app-panel is activated!');
