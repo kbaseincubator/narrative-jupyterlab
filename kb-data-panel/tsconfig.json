@@ -14,5 +14,5 @@
     "types": [],
     "jsx": "react"
   },
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }
