@@ -21,33 +21,41 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 export class AppList extends Widget {
-    private currentTag: string;
-    private userId: string;
+
     private nbTracker: INotebookTracker;
 
-    constructor(tracker: INotebookTracker) {
+    constructor(tracker: INotebookTracker, currentTag: string) {
         super();
         this.nbTracker = tracker;
         this.addClass('kb-appPanel-list');
-        this.refresh();
+        this.refresh(currentTag);
     }
 
-    refresh() {
-        //TODO: change tag from upper class
-        this.currentTag = 'release';
-        //TODO: get userID from narrative-utils.Auth()
-        this.userId = 'tgu2';
+    refresh(currentTag: string) {
 
         let auth = new Auth();
+
+        auth.getTokenInfo(auth.token)
+            .then(result => {
+                this.getAppInfo(result.user, currentTag, auth.token);
+            })
+            .catch(this.handleRefreshError);
+    }
+
+    getAppInfo(userId: string, currentTag: string, token: string) {
+        console.log('tag and user:');
+        console.log(currentTag);
+        console.log(userId);
+
         let narrService = new KBaseDynamicServiceClient({
             module: 'NarrativeService',
-            authToken: auth.token
+            authToken: token
         });
 
         narrService
             .call('get_all_app_info', [{
-                'tag': this.currentTag,
-                'user': this.userId
+                'tag': currentTag,
+                'user': userId
             }])
             .then((appInfo: any) => {
                 this.renderData(appInfo.app_infos, appInfo.module_versions);
