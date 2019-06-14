@@ -1,5 +1,5 @@
 import {
-  JupyterLab, JupyterLabPlugin
+  JupyterFrontEnd, JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
 import {
@@ -11,49 +11,91 @@ import {
 } from '@jupyterlab/notebook';
 
 import {
-  CodeCell, Cell
+  CodeCell
 } from '@jupyterlab/cells';
 
 import '../style/index.css';
+import { IObservableMap } from '@jupyterlab/observables';
+import { JSONValue } from '@phosphor/coreutils';
+import { Widget, PanelLayout } from '@phosphor/widgets';
 
-const factory: JupyterLabPlugin<NotebookPanel.IContentFactory> = {
+
+export class KBaseCodeCell extends CodeCell {
+  kbaseWidget: KBaseWidget;
+
+  constructor(options: CodeCell.IOptions) {
+    super(options);
+    this.model.metadata.changed.connect(
+      this._metadataChanged,
+      this
+    );
+    if (this.model.metadata.keys().indexOf('kbase') != -1 && !this.kbaseWidget) {
+      this.setupKBaseWidget();
+    }
+  }
+
+  _metadataChanged(model: IObservableMap<JSONValue>,
+    args: IObservableMap.IChangedArgs<JSONValue>): void {
+      if (args.key === 'kbase' && !this.kbaseWidget) {
+        this.setupKBaseWidget();
+      }
+  }
+
+  setupKBaseWidget(): void {
+    this.kbaseWidget = new KBaseWidget(this.model.metadata);
+    const layout = this.layout as PanelLayout;
+    layout.insertWidget(2, this.kbaseWidget);
+  }
+}
+
+export class KBaseWidget extends Widget {
+  metadata: IObservableMap<JSONValue>;
+  readonly mainDiv: HTMLDivElement;
+
+  constructor(metadata: IObservableMap<JSONValue>) {
+    super();
+    this.metadata = metadata;
+    this.addClass('kb-cell');
+    this.mainDiv = document.createElement('div');
+    this.node.appendChild(this.mainDiv);
+
+    this.metadata.changed.connect(
+      this.updateKBaseModel,
+      this
+    );
+    this.renderKBaseModel();
+  }
+
+  renderKBaseModel(): void {
+    const kbMeta = this.metadata.get('kbase') as JSONValue;
+    const str = 'I am a KBase cell. My metadata is: ' + JSON.stringify(kbMeta);
+    this.mainDiv.innerText = str;
+  }
+
+  updateKBaseModel(model: IObservableMap<JSONValue>,
+    args: IObservableMap.IChangedArgs<JSONValue>): void {
+      this.metadata = model;
+      this.renderKBaseModel();
+    }
+}
+
+const factory: JupyterFrontEndPlugin<NotebookPanel.IContentFactory> = {
   id: '@kbase/narrative-extension:factory',
   provides: NotebookPanel.IContentFactory,
   requires: [IEditorServices],
   autoStart: true,
-  activate: (app: JupyterLab, editorServices: IEditorServices) => {
+  activate: (app: JupyterFrontEnd, editorServices: IEditorServices) => {
     let editorFactory = editorServices.factoryService.newInlineEditor;
     return new KBaseContentFactory({ editorFactory });
   }
 };
 
 export class KBaseContentFactory extends NotebookPanel.ContentFactory {
-  constructor(options?: Cell.ContentFactory.IOptions) {
-    super(options);
-  }
-
   createCodeCell(options: CodeCell.IOptions, parent: StaticNotebook): CodeCell {
     if (!options.contentFactory) {
       options.contentFactory = this;
     }
-    // can respond to metadata here.
-
-    // make a new content factory for App Cells?
-    // use it here for the Code Cell.
-    let cell = new CodeCell(options);
-    console.log('LET THERE BE A CODE CELL!');
-
-    return cell;
-  }
-
-  createAppCell(options: CodeCell.IOptions, parent: StaticNotebook): CodeCell {
-    if (!options.contentFactory) {
-      options.contentFactory = this;
-    }
-
-    let cell = new CodeCell(options);
-    alert('LET THERE BE AN APP CELL!');
-    return cell;
+    return new KBaseCodeCell(options);
   }
 };
 

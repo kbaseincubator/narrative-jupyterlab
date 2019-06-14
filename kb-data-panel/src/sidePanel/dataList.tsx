@@ -4,8 +4,8 @@ import {
 import {
     Auth, KBaseDynamicServiceClient
 } from '@kbase/narrative-utils';
-import { WorkspaceObjectInfo } from './workspaceHelper';
-import { DataCard } from './dataCard';
+import { WorkspaceObjectInfo } from '../workspaceHelper';
+import { DataCard } from '../dataCard';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { INotebookTracker, NotebookActions, /*Notebook*/ } from '@jupyterlab/notebook';
@@ -24,26 +24,23 @@ export class DataList extends Widget {
         this.refresh();
     }
 
-    refresh() {
+    async refresh() {
+        let data = null;
         if (this.curWsId) {
             let auth = new Auth();
             let narrService = new KBaseDynamicServiceClient({
                 module: 'NarrativeService',
                 authToken: auth.token
             });
-            narrService
-                .call('list_objects_with_sets', [{
-                    'ws_id': this.curWsId,
-                    'includeMetadata': 1
-                }])
-                .then((data: any) => {
-                    this.renderData(data.data);
-                })
-                .catch(this.handleRefreshError);
+            try {
+                data = await narrService.call('list_objects_with_sets', [{ ws_id: this.curWsId, includeMetadata: 1 }]);
+                data = data.data;
+            }
+            catch (error) {
+                this.handleRefreshError(error);
+            }
         }
-        else {
-            this.renderData(null);
-        }
+        this.renderData(data);
     }
 
     changeWorkspace(wsId: number): void {
@@ -71,39 +68,14 @@ export class DataList extends Widget {
     }
 
     insertDataCell(wsId: number, objId: number) {
-        console.log(wsId + '/' + objId);
-        // const context = this.nbTracker.currentWidget.context;
-        const current = this.nbTracker.currentWidget;
-        const { context, content, /*contentFactory*/ } = current;
+        const { context, content } = this.nbTracker.currentWidget;
 
         NotebookActions.insertBelow(content);
         const curCell = this.nbTracker.activeCell as CodeCell;
         curCell.model.value.text = wsId + '/' + objId;
         curCell.model.metadata.set('kbase', {'foo': 'bar'});
+        curCell.initializeState();
         CodeCell.execute(curCell, context.session);
-
-        /* Order of ops
-         * 1. Set up metadata.
-         * 2. Create cell with metadata (content factory will make a "viewer" cell)
-         *   a. Auto-create code
-         *   b. Other metadata as necessary
-         * 3. Execute it
-         *
-         */
-        // const cellModel = new CodeCellModel({});
-        // cellModel.metadata.set('kbase', {'foo': 'bar'});
-        // const cellOptions = { cellModel, contentFactory };
-
-        // const model = context.model;
-        // const cell = model.contentFactory.createCodeCell(cellOptions);
-
-        // const curCell = this.nbTracker.activeCell;
-        // model.cells.insert(0, cell);
-        // cell.value.text = wsId + '/' + objId;
-        // const curCell = this.nbTracker.activeCell as CodeCell;
-        // CodeCell.execute(curCell, context.session);
-
-        console.log('cell inserted?');
     }
 
     handleRefreshError(err: any) {

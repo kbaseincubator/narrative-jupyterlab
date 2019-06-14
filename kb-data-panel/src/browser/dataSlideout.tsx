@@ -10,6 +10,11 @@ import {
     Message
 } from '@phosphor/messaging';
 
+import {
+    Auth //, KBaseDynamicServiceClient
+} from '@kbase/narrative-utils';
+
+
 export class DataSlideout extends Widget {
     private _tracker : INotebookTracker;
     private curWsId : Number;
@@ -22,7 +27,7 @@ export class DataSlideout extends Widget {
         this.title.closable = true;
 
         let div = document.createElement('div');
-        div.innerText = 'Some stuff goes in here.';
+        div.innerText = 'Data stuff goes here.';
         this.node.appendChild(div);
 
         this.testDiv = document.createElement('div');
@@ -47,5 +52,12 @@ export class DataSlideout extends Widget {
 
     onUpdateRequest(msg: Message): void {
         this.testDiv.innerText = String(this.curWsId);
+
+        let auth = new Auth();
+        auth.getTokenInfo(auth.token)
+            .then(info => {
+                console.log(info);
+            });
+
     }
 }

@@ -16,10 +16,15 @@ import {
     DataList
 } from './dataList';
 
-export class DataPanel extends Widget {
-    private _tracker: INotebookTracker;
+import {
+    CommandRegistry
+} from '@phosphor/commands';
 
-    constructor(nbTracker: INotebookTracker) {
+export class DataPanel extends Widget {
+    readonly _tracker: INotebookTracker;
+    readonly commands: CommandRegistry;
+
+    constructor(commands: CommandRegistry, nbTracker: INotebookTracker) {
         super();
 
         this.id = 'kb-data-panel';
@@ -27,17 +32,10 @@ export class DataPanel extends Widget {
         this.title.closable = false;
         this.addClass('kb-dataPanel');
 
-        this.toolbar = new Toolbar<Widget>();
-        const refreshBtn = new ToolbarButton({
-            iconClassName: 'fa fa-refresh',
-            iconLabel: 'r',
-            tooltip: 'refresh',
-            onClick: () => {
-                this.refreshData();
-            }
-        });
+        this.commands = commands;
 
-        this.toolbar.addItem('refresh', refreshBtn);
+        this.toolbar = new Toolbar<Widget>();
+        this._initToolbar();
         this.datalist = new DataList(null, nbTracker);
 
         let layout = new PanelLayout();
@@ -51,6 +49,29 @@ export class DataPanel extends Widget {
             this
         );
         this._onActiveNotebookPanelChanged();
+    }
+
+    _initToolbar() : void {
+        const refreshBtn = new ToolbarButton({
+            iconClassName: 'fa fa-refresh',
+            iconLabel: 'r',
+            tooltip: 'Refresh',
+            onClick: () => {
+                this.refreshData();
+            }
+        });
+
+        const addDataBtn = new ToolbarButton({
+            iconClassName: 'fa fa-plus',
+            iconLabel: 'a',
+            tooltip: 'Add Data',
+            onClick: () => {
+                this.commands.execute('kbase:data-open');
+            }
+        });
+
+        this.toolbar.addItem('refresh', refreshBtn);
+        this.toolbar.addItem('addData', addDataBtn);
     }
 
     _onActiveNotebookPanelChanged() : void {
