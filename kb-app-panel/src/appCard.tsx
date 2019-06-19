@@ -29,7 +29,7 @@ export class AppCard extends React.Component<IAppCardProps, {}> {
     }
 
     insertAppCell = () => {
-        this.props.cb(this.props.info.id);
+        this.props.cb(this.props.info);
     }
 
     render() {
