@@ -20,7 +20,8 @@ import {
 import '../style/index.css';
 
 export class AppPanel extends Widget {
-    // private _tracker: INotebookTracker;
+
+    private currentTag: string;
 
     constructor(nbTracker: INotebookTracker) {
         super();
@@ -29,6 +30,7 @@ export class AppPanel extends Widget {
         this.title.label = 'Apps';
         this.title.closable = false;
         this.addClass('kb-appPanel');
+        this.currentTag = 'release';
 
         this.toolbar = new Toolbar<Widget>();
         let refreshBtn = new ToolbarButton({
@@ -36,7 +38,7 @@ export class AppPanel extends Widget {
             iconLabel: 'r',
             tooltip: 'Refresh app/method listings',
             onClick: () => {
-                this.refreshApp();
+                this.refreshApp(this.currentTag);
             }
         });
 
@@ -44,13 +46,15 @@ export class AppPanel extends Widget {
             label: 'R',
             tooltip: 'Toggle between Release/Beta/Dev versions',
             onClick: () => {
-                this.refreshApp();
+                //TODO: update button icon on click
+                this.update_tag();
+                this.refreshApp(this.currentTag);
             }
         });
 
         this.toolbar.addItem('refresh', refreshBtn);
         this.toolbar.addItem('version', versionBtn);
-        this.applist = new AppList(nbTracker);
+        this.applist = new AppList(nbTracker, this.currentTag);
 
         let layout = new PanelLayout();
         layout.addWidget(this.toolbar);
@@ -59,8 +63,18 @@ export class AppPanel extends Widget {
         this.layout = layout;
     }
 
-    refreshApp() : void {
-        this.applist.refresh();
+    update_tag() : void {
+        if (this.currentTag == 'release') {
+            this.currentTag = 'beta';
+        } else if (this.currentTag == 'beta') {
+            this.currentTag = 'dev';
+        } else if (this.currentTag == 'dev') {
+            this.currentTag = 'release';
+        }
+    }
+
+    refreshApp(currentTag: string) : void {
+        this.applist.refresh(currentTag);
     }
 
     readonly toolbar: Toolbar<Widget>;

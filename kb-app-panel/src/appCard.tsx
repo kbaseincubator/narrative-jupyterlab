@@ -36,7 +36,7 @@ export class AppCard extends React.Component<IAppCardProps, {}> {
 
         let info = this.props.info;
         // let favorite = this.props.favorite;
-        console.log(info);
+        // console.log(info);
 
         let icon_url = null;
         if ( info.hasOwnProperty('icon') ) {
