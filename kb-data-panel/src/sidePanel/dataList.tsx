@@ -10,7 +10,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { INotebookTracker, NotebookActions, /*Notebook*/ } from '@jupyterlab/notebook';
 import { CodeCell, /*CodeCellModel*/ } from '@jupyterlab/cells';
-
+// import {
+//     ReactWidget
+// } from '@jupyterlab/apputils';
 
 export class DataList extends Widget {
     private curWsId: number;

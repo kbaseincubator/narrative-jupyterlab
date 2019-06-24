@@ -41,12 +41,9 @@ export class AppPanel extends Widget {
         });
 
         let versionBtn = new ToolbarButton({
-            // iconClassName: 'btn btn-xs btn-default',
-            // iconLabel: 'r',
             label: 'R',
             tooltip: 'Toggle between Release/Beta/Dev versions',
             onClick: () => {
-            // versionBtn.lable = 'B';
                 this.refreshApp();
             }
         });
