@@ -22,7 +22,7 @@ import {
 } from '@phosphor/widgets';
 
 import '../style/index.css';
-import { ICommandPalette, InstanceTracker } from '@jupyterlab/apputils';
+import { ICommandPalette, WidgetTracker } from '@jupyterlab/apputils';
 import { JSONExt } from '@phosphor/coreutils';
 
 
@@ -38,7 +38,7 @@ const extension: JupyterFrontEndPlugin<void> = {
              restorer: ILayoutRestorer,
              nbTracker: INotebookTracker,
              labShell: ILabShell) => {
-    let tracker = new InstanceTracker<Widget>({ namespace: 'kbase' });
+    let tracker = new WidgetTracker<Widget>({ namespace: 'kbase' });
 
     let dataSlideout: DataSlideout = new DataSlideout(nbTracker);
     const command: string = 'kbase:data-open';

@@ -17,11 +17,14 @@ import {
 import '../style/index.css';
 import { IObservableMap } from '@jupyterlab/observables';
 import { JSONValue } from '@phosphor/coreutils';
-import { Widget, PanelLayout } from '@phosphor/widgets';
+import { PanelLayout } from '@phosphor/widgets';
+import { KBaseAppCellWidget } from './kbaseCellWidget';
+import { Signal, ISignal } from '@phosphor/signaling';
 
 
 export class KBaseCodeCell extends CodeCell {
-  kbaseWidget: KBaseWidget;
+  kbaseWidget: KBaseAppCellWidget;
+  private _updateSignal = new Signal<this, boolean>(this);
 
   constructor(options: CodeCell.IOptions) {
     super(options);
@@ -34,49 +37,27 @@ export class KBaseCodeCell extends CodeCell {
     }
   }
 
+  get updateSignal(): ISignal<this, boolean> {
+    return this._updateSignal;
+  }
+
   _metadataChanged(model: IObservableMap<JSONValue>,
     args: IObservableMap.IChangedArgs<JSONValue>): void {
       if (args.key === 'kbase' && !this.kbaseWidget) {
         this.setupKBaseWidget();
       }
+      this._updateSignal.emit(true);
   }
 
   setupKBaseWidget(): void {
-    this.kbaseWidget = new KBaseWidget(this.model.metadata);
+    this.inputArea.hide();
+    this.kbaseWidget = new KBaseAppCellWidget({
+      updateSignal: this._updateSignal,
+      kbaseMetadata: this.model.metadata
+    });
     const layout = this.layout as PanelLayout;
     layout.insertWidget(2, this.kbaseWidget);
   }
-}
-
-export class KBaseWidget extends Widget {
-  metadata: IObservableMap<JSONValue>;
-  readonly mainDiv: HTMLDivElement;
-
-  constructor(metadata: IObservableMap<JSONValue>) {
-    super();
-    this.metadata = metadata;
-    this.addClass('kb-cell');
-    this.mainDiv = document.createElement('div');
-    this.node.appendChild(this.mainDiv);
-
-    this.metadata.changed.connect(
-      this.updateKBaseModel,
-      this
-    );
-    this.renderKBaseModel();
-  }
-
-  renderKBaseModel(): void {
-    const kbMeta = this.metadata.get('kbase') as JSONValue;
-    const str = 'I am a KBase cell. My metadata is: ' + JSON.stringify(kbMeta);
-    this.mainDiv.innerText = str;
-  }
-
-  updateKBaseModel(model: IObservableMap<JSONValue>,
-    args: IObservableMap.IChangedArgs<JSONValue>): void {
-      this.metadata = model;
-      this.renderKBaseModel();
-    }
 }
 
 const factory: JupyterFrontEndPlugin<NotebookPanel.IContentFactory> = {

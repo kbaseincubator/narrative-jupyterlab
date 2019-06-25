@@ -94,46 +94,45 @@ export class AppList extends Widget {
         );
     }
 
-    build_cell_text(app_id: string) {
-        let cell_text: string = "TEST APP\n";
-        cell_text += "from biokbase.narrative.jobs.appmanager import AppManager\n";
-        cell_text += `AppManager().run_app(\n"${app_id}"\n)\n`;
-
-        return cell_text;
-    }
-
-    insertAppCell(app_id: string) {
+    insertAppCell(appInfo: AppObjectInfo) {
         // const context = this.nbTracker.currentWidget.context;
         const current = this.nbTracker.currentWidget;
-        const { context, content, /*contentFactory*/ } = current;
 
-        NotebookActions.insertBelow(content);
+        NotebookActions.insertBelow(current.content);
         const curCell = this.nbTracker.activeCell as CodeCell;
-        curCell.model.value.text = this.build_cell_text(app_id);
-        curCell.model.metadata.set('kbase', {'foo': 'bar'});
-        CodeCell.execute(curCell, context.session);
+        curCell.model.metadata.set('kbase', this.newAppCellMetadata(appInfo));
+    }
 
-         /* Order of ops
-         * 1. Set up metadata.
-         * 2. Create cell with metadata (content factory will make a "viewer" cell)
-         *   a. Auto-create code
-         *   b. Other metadata as necessary
-         * 3. Execute it
-         *
-         */
-        // const cellModel = new CodeCellModel({});
-        // cellModel.metadata.set('kbase', {'foo': 'bar'});
-        // const cellOptions = { cellModel, contentFactory };
-
-         // const model = context.model;
-        // const cell = model.contentFactory.createCodeCell(cellOptions);
-
-         // const curCell = this.nbTracker.activeCell;
-        // model.cells.insert(0, cell);
-        // cell.value.text = wsId + '/' + objId;
-        // const curCell = this.nbTracker.activeCell as CodeCell;
-        // CodeCell.execute(curCell, context.session);
-
-         console.log('app cell inserted?');
+    // TODO: make a type for app cell metadata
+    newAppCellMetadata(appInfo: AppObjectInfo): any {
+        const now: string = new Date().toDateString();
+        let metadata = {
+            appCell: {
+                app: {
+                    gitCommitHash: appInfo.git_commit_hash,
+                    id: appInfo.id,
+                    tag: this.currentTag,
+                    version: appInfo.ver
+                },
+            },
+            attributes: {
+                created: now,
+                id: '12345', // TODO: gen UUID4
+                info: {
+                    label: 'more...',
+                    url: '/#appcatalog/app/' + appInfo.id + '/' + this.currentTag,
+                    lastLoaded: now,
+                    status: 'new',
+                    subtitle: appInfo.subtitle,
+                    title: appInfo.name
+                }
+            },
+            cellState: {
+                minimized: true,
+                showCodeInputArea: false
+            },
+            type: 'app'
+        };
+        return metadata;
     }
 }
