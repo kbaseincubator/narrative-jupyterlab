@@ -11,7 +11,7 @@
   },
   "author": "The DoE KBase project",
   "license": "SEE LICENSE in ../LICENSE.md",
-  "private": false,
+  "private": true,
   "devDependencies": {
     "rimraf": "^2.6.3",
     "typescript": "3.4.5"

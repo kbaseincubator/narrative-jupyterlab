@@ -1,1 +1,1 @@
-export { AppInfo } from './apps';
+export { AppCellMetadata } from './apps';

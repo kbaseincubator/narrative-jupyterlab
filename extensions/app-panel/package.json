@@ -33,7 +33,7 @@
     "@jupyterlab/application": "^1.0.0-alpha.8",
     "@jupyterlab/apputils": "^1.0.0-alpha.8",
     "@jupyterlab/notebook": "^1.0.0-alpha.8",
-    "@kbase/narrative-common": "file:../../narrative-common/",
+    "@kbase/narrative-common": "narrative-common",
     "@kbase/narrative-utils": "https://github.com/kbaseIncubator/narrative-utils",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
