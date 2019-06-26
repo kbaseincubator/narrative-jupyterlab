@@ -1,1 +1,0 @@
-export { AppCellMetadata } from './apps';
