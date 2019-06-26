@@ -9,9 +9,5 @@
   "scripts": {
   },
   "dependencies": {
-  },
-  "workspaces": [
-    "extensions/*",
-    "narrative-common"
-  ]
+  }
 }
