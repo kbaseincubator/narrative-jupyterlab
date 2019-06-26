@@ -1,7 +1,7 @@
 {
-  "name": "kb-data-panel",
+  "name": "@kbase/cell-extension",
   "version": "0.1.0",
-  "description": "The KBase Data Panel",
+  "description": "A JupyterLab extension.",
   "keywords": [
     "jupyter",
     "jupyterlab",
@@ -12,10 +12,10 @@
     "url": "https://github.com/my_name/myextension/issues"
   },
   "license": "BSD-3-Clause",
-  "author": "Bill Riehl",
+  "author": "",
   "files": [
-    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,woff,ttf}",
-    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,woff,ttf}"
+    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -31,20 +31,11 @@
   },
   "dependencies": {
     "@jupyterlab/application": "^1.0.0-alpha.8",
-    "@jupyterlab/apputils": "^1.0.0-alpha.8",
-    "@jupyterlab/notebook": "^1.0.0-alpha.8",
-    "@kbase/narrative-utils": "https://github.com/kbaseIncubator/narrative-utils",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "@jupyterlab/notebook": "^1.0.0-alpha.8"
   },
   "devDependencies": {
-    "@types/react": "^16.8.13",
-    "@types/react-dom": "^16.8.3",
     "rimraf": "^2.6.1",
     "typescript": "~3.1.1"
-  },
-  "resolutions": {
-    "@types/react": "^16.8.13"
   },
   "jupyterlab": {
     "extension": true

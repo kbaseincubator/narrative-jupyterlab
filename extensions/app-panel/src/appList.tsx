@@ -7,14 +7,16 @@ import {
 } from '@kbase/narrative-utils';
 
 import {
+    AppInfo
+} from '@kbase/narrative-common';
+
+import {
     INotebookTracker,
     NotebookActions
 } from '@jupyterlab/notebook';
 
 import { CodeCell } from '@jupyterlab/cells';
-
 import { AppCard } from './appCard';
-
 import { AppObjectInfo } from './appObjectInfoHelper';
 
 import * as React from 'react';
@@ -23,6 +25,7 @@ import * as ReactDOM from 'react-dom';
 export class AppList extends Widget {
 
     private nbTracker: INotebookTracker;
+    private currentTag: string;
 
     constructor(tracker: INotebookTracker, currentTag: string) {
         super();
