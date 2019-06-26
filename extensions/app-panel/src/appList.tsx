@@ -3,12 +3,10 @@ import {
 } from '@phosphor/widgets';
 
 import {
-    Auth, KBaseDynamicServiceClient
-} from '@kbase/narrative-utils';
-
-import {
+    Auth,
+    KBaseDynamicServiceClient,
     AppCellMetadata
-} from '@kbase/narrative-common';
+} from '@kbase/narrative-utils';
 
 import {
     INotebookTracker,
