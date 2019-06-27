@@ -98,10 +98,10 @@ then
     # Install external JavaScript code
     # --------------------
     cd $NARRATIVE_ROOT_DIR
-    log "Installing front end build components with npm"
-    npm install 2>&1 | tee -a ${logfile}
-    log "Installing front end components with bower"
-    bower install -V --allow-root --config.interactive=false 2>&1 | tee -a ${logfile}
+    log "Installing front end build components with yarn"
+    yarn install 2>&1 | tee -a ${logfile}
+    # log "Installing front end components with bower"
+    # bower install -V --allow-root --config.interactive=false 2>&1 | tee -a ${logfile}
 
     # Install jupyter notebook
     conda install -y -c conda-forge notebook==$NOTEBOOK_VERSION 2>&1 | tee -a ${logfile}
@@ -203,9 +203,9 @@ then
     # jupyter nbextension enable --py --sys-prefix widgetsnbextension
     # log "Done installing nbextensions"
 
-    jupyter labextension install ./kb-app-panel --no-build
-    jupyter labextension install ./kb-data-panel --no-build
-    jupyter labextension install ./kbase-cell-proto --no-build
+    jupyter labextension install ./extensions/app-panel --no-build
+    jupyter labextension install ./extensions/data-panel --no-build
+    jupyter labextension install ./extensions/cell-extension --no-build
     jupyter lab build
 fi
 

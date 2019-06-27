@@ -3,12 +3,10 @@ import {
 } from '@phosphor/widgets';
 
 import {
-    Auth, KBaseDynamicServiceClient
+    Auth,
+    KBaseDynamicServiceClient,
+    AppCellMetadata
 } from '@kbase/narrative-utils';
-
-import {
-    AppInfo
-} from '@kbase/narrative-common';
 
 import {
     INotebookTracker,
@@ -103,39 +101,47 @@ export class AppList extends Widget {
 
         NotebookActions.insertBelow(current.content);
         const curCell = this.nbTracker.activeCell as CodeCell;
-        curCell.model.metadata.set('kbase', this.newAppCellMetadata(appInfo));
+        curCell.model.metadata.set('kbase', this.newAppCellMetadata(appInfo) as any);
     }
 
     // TODO: make a type for app cell metadata
-    newAppCellMetadata(appInfo: AppObjectInfo): any {
-        const now: string = new Date().toDateString();
-        let metadata = {
-            appCell: {
-                app: {
-                    gitCommitHash: appInfo.git_commit_hash,
-                    id: appInfo.id,
-                    tag: this.currentTag,
-                    version: appInfo.ver
-                },
-            },
-            attributes: {
-                created: now,
-                id: '12345', // TODO: gen UUID4
-                info: {
-                    label: 'more...',
-                    url: '/#appcatalog/app/' + appInfo.id + '/' + this.currentTag,
-                    lastLoaded: now,
-                    status: 'new',
-                    subtitle: appInfo.subtitle,
-                    title: appInfo.name
-                }
-            },
-            cellState: {
-                minimized: true,
-                showCodeInputArea: false
-            },
-            type: 'app'
+    newAppCellMetadata(appInfo: AppObjectInfo): AppCellMetadata {
+        // const now: string = new Date().toDateString();
+        // let metadata = {
+        //     appCell: {
+        //         app: {
+        //             gitCommitHash: appInfo.git_commit_hash,
+        //             id: appInfo.id,
+        //             tag: this.currentTag,
+        //             version: appInfo.ver
+        //         },
+        //     },
+        //     attributes: {
+        //         created: now,
+        //         id: '12345', // TODO: gen UUID4
+        //         info: {
+        //             label: 'more...',
+        //             url: '/#appcatalog/app/' + appInfo.id + '/' + this.currentTag,
+        //             lastLoaded: now,
+        //             status: 'new',
+        //             subtitle: appInfo.subtitle,
+        //             title: appInfo.name
+        //         }
+        //     },
+        //     cellState: {
+        //         minimized: true,
+        //         showCodeInputArea: false
+        //     },
+        //     type: 'app'
+        // };
+        let info = {
+            id: appInfo.id,
+            name: appInfo.name,
+            version: appInfo.ver,
+            module: appInfo.module_name,
+            tag: this.currentTag
         };
-        return metadata;
+        return info;
+        // return metadata;
     }
 }

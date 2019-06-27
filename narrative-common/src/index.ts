@@ -1,1 +1,0 @@
-export { AppInfo } from './apps';
