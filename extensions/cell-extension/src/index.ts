@@ -16,9 +16,9 @@ import {
 
 import '../style/index.css';
 import { IObservableMap } from '@jupyterlab/observables';
-import { JSONValue } from '@phosphor/coreutils';
+import { JSONValue, JSONObject } from '@phosphor/coreutils';
 import { PanelLayout } from '@phosphor/widgets';
-import { KBaseAppCellWidget } from './kbaseCellWidget';
+import { KBaseAppCellWidget } from './kbaseAppCellWidget';
 import { Signal, ISignal } from '@phosphor/signaling';
 
 
@@ -51,10 +51,16 @@ export class KBaseCodeCell extends CodeCell {
 
   setupKBaseWidget(): void {
     this.inputArea.hide();
-    this.kbaseWidget = new KBaseAppCellWidget({
-      updateSignal: this._updateSignal,
-      kbaseMetadata: this.model.metadata
-    });
+    const kbaseMetadata = this.model.metadata.get('kbase') as JSONObject;
+    const type = kbaseMetadata.type;
+    switch (type) {
+      case 'app':
+      default:
+        this.kbaseWidget = new KBaseAppCellWidget({
+          updateSignal: this._updateSignal,
+          kbaseMetadata: this.model.metadata
+        });
+    }
     const layout = this.layout as PanelLayout;
     layout.insertWidget(2, this.kbaseWidget);
   }

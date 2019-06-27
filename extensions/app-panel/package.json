@@ -33,9 +33,11 @@
     "@jupyterlab/application": "^1.0.0-alpha.8",
     "@jupyterlab/apputils": "^1.0.0-alpha.8",
     "@jupyterlab/notebook": "^1.0.0-alpha.8",
-    "@kbase/narrative-utils": "https://github.com/kbaseIncubator/narrative-utils",
+    "@kbase/narrative-utils": "https://github.com/briehl/narrative-utils",
+    "@types/uuid": "^3.4.4",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/react": "^16.8.13",

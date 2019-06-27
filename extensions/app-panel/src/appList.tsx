@@ -5,7 +5,7 @@ import {
 import {
     Auth,
     KBaseDynamicServiceClient,
-    AppCellMetadata
+    IAppCellMetadata
 } from '@kbase/narrative-utils';
 
 import {
@@ -19,6 +19,9 @@ import { AppObjectInfo } from './appObjectInfoHelper';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { JSONObject } from '@phosphor/coreutils';
+
+import { v4 as uuidv4 } from 'uuid';
 
 export class AppList extends Widget {
 
@@ -101,47 +104,47 @@ export class AppList extends Widget {
 
         NotebookActions.insertBelow(current.content);
         const curCell = this.nbTracker.activeCell as CodeCell;
-        curCell.model.metadata.set('kbase', this.newAppCellMetadata(appInfo) as any);
+        curCell.model.metadata.set('kbase', this.newAppCellMetadata(appInfo) as unknown as JSONObject);
     }
 
     // TODO: make a type for app cell metadata
-    newAppCellMetadata(appInfo: AppObjectInfo): AppCellMetadata {
-        // const now: string = new Date().toDateString();
-        // let metadata = {
-        //     appCell: {
-        //         app: {
-        //             gitCommitHash: appInfo.git_commit_hash,
-        //             id: appInfo.id,
-        //             tag: this.currentTag,
-        //             version: appInfo.ver
-        //         },
-        //     },
-        //     attributes: {
-        //         created: now,
-        //         id: '12345', // TODO: gen UUID4
-        //         info: {
-        //             label: 'more...',
-        //             url: '/#appcatalog/app/' + appInfo.id + '/' + this.currentTag,
-        //             lastLoaded: now,
-        //             status: 'new',
-        //             subtitle: appInfo.subtitle,
-        //             title: appInfo.name
-        //         }
-        //     },
-        //     cellState: {
-        //         minimized: true,
-        //         showCodeInputArea: false
-        //     },
-        //     type: 'app'
-        // };
-        let info = {
-            id: appInfo.id,
-            name: appInfo.name,
-            version: appInfo.ver,
-            module: appInfo.module_name,
-            tag: this.currentTag
+    newAppCellMetadata(appInfo: AppObjectInfo): IAppCellMetadata {
+        const curDate: Date = new Date();
+        const nowMs: number = curDate.getTime();
+        let metadata = {
+            appCell: {
+                app: {
+                    gitCommitHash: appInfo.git_commit_hash,
+                    id: appInfo.id,
+                    tag: this.currentTag,
+                    version: appInfo.ver
+                },
+                fsm: {
+                    currentState: {
+                    }
+                },
+                outdated: false
+            },
+            attributes: {
+                created: nowMs,
+                id: uuidv4(),
+                info: {
+                    label: 'more...',
+                    url: '/#appcatalog/app/' + appInfo.id + '/' + this.currentTag,
+                    lastLoaded: nowMs,
+                    status: 'new',
+                    subtitle: appInfo.subtitle,
+                    title: appInfo.name
+                }
+            },
+            cellState: {
+                minimized: true
+            },
+            userSettings: {
+                showCodeInputArea: false
+            },
+            type: 'app'
         };
-        return info;
-        // return metadata;
+        return metadata;
     }
 }
