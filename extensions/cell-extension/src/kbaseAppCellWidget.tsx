@@ -48,7 +48,11 @@ function KBaseAppCellComponent(props: AppCellComponent.IProps) {
         icon: props.appCell.app.iconUrl
     };
     return (
-        <AppCellHeader {...headerProps} />
+        <div style={{display: 'flex'}}>
+            <div className="jp-Collapser"></div>
+            <div className="jp-InputPrompt"></div>
+            <AppCellHeader {...headerProps} />
+        </div>
     );
 }
 
@@ -73,7 +77,7 @@ function AppIcon(props: { iconUrl: string }) {
         const color = 'rgb(103, 58, 183)';
         return(
             <div className="kb-app-header-icon">
-                <div className="fa-stack fa-2x" style={{cursor: "pointer"}}>
+                <div className="fa-stack fa-2x">
                     <i className={shapeClass} style={{color: color}}></i>
                     <i className={iconClass}></i>
                 </div>

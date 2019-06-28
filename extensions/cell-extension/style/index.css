@@ -1,10 +1,13 @@
+.kb-cell-widget {
+}
+
 .kb-app-header-container {
 
 }
 
 .kb-app-header-title {
     display: flex;
-    height: 56px;
+    /* height: 56px; */
 }
 
 .kb-app-header-icon {
@@ -32,3 +35,7 @@
     font-size: 90%;
     color: #666;
 }
+
+/* .jp-mod-selected .kb-cell-widget {
+    background: var(--jp-brand-color1);
+} */
