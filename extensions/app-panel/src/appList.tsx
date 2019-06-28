@@ -117,7 +117,8 @@ export class AppList extends Widget {
                     gitCommitHash: appInfo.git_commit_hash,
                     id: appInfo.id,
                     tag: this.currentTag,
-                    version: appInfo.ver
+                    version: appInfo.ver,
+                    iconUrl: (appInfo.icon && appInfo.icon.url) ? appInfo.icon.url : null
                 },
                 fsm: {
                     currentState: {
