@@ -42,7 +42,6 @@ export namespace AppCellComponent {
 }
 
 function KBaseAppCellComponent(props: AppCellComponent.IProps) {
-    debugger;
     const headerProps = {
         title: props.attributes.info.title,
         subtitle: props.attributes.info.subtitle,
@@ -51,7 +50,6 @@ function KBaseAppCellComponent(props: AppCellComponent.IProps) {
     return (
         <AppCellHeader {...headerProps} />
     );
-    // return (<div>{JSON.stringify(props)}</div>)
 }
 
 function AppCellHeader(props: AppCellComponent.IHeaderProps) {
