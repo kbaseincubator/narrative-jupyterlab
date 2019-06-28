@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "@jupyterlab/application": "^1.0.0-alpha.8",
-    "@jupyterlab/notebook": "^1.0.0-alpha.8"
+    "@jupyterlab/notebook": "^1.0.0-alpha.8",
+    "@kbase/narrative-utils": "https://github.com/kbaseIncubator/narrative-utils"
   },
   "devDependencies": {
     "rimraf": "^2.6.1",
