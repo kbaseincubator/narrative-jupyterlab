@@ -315,9 +315,10 @@
     "@blueprintjs/select" "^3.3.0"
     react "~16.8.4"
 
-"@kbase/narrative-utils@https://github.com/briehl/narrative-utils":
-  version "0.0.5"
-  resolved "https://github.com/briehl/narrative-utils#35b7d95fc57671b157b6afa37065eeb6791026f5"
+"@kbase/narrative-utils@https://github.com/kbaseIncubator/narrative-utils":
+  version "0.0.6"
+  uid a88354b8aa2a6147bbe103063251a06a6d9f1b86
+  resolved "https://github.com/kbaseIncubator/narrative-utils#a88354b8aa2a6147bbe103063251a06a6d9f1b86"
   dependencies:
     bluebird "^3.5.3"
     moment "^2.24.0"
@@ -841,9 +842,9 @@ popper.js@^1.14.1, popper.js@^1.14.4:
   integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
 
 postcss@^7.0.5:
-  version "7.0.17"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.17.tgz#4da1bdff5322d4a0acaab4d87f3e782436bad31f"
-  integrity sha512-546ZowA+KZ3OasvQZHsbuEpysvwTZNGJv9EfyCQdsIDltPSWHAeTQ5fQy/Npi2ZDtLI3zs7Ps/p6wThErhm9fQ==
+  version "7.0.36"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.36.tgz#056f8cffa939662a8f5905950c07d5285644dfcb"
+  integrity sha512-BebJSIUMwJHRH0HAQoxN4u1CN86glsrwsW0q7T+/m44eXOUAxSNdHRkNZPYz5vVUbg17hFgOQDE7fZk7li3pZw==
   dependencies:
     chalk "^2.4.2"
     source-map "^0.6.1"
