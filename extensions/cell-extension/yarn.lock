@@ -315,9 +315,10 @@
     "@blueprintjs/select" "^3.3.0"
     react "~16.8.4"
 
-"@kbase/narrative-utils@https://github.com/briehl/narrative-utils":
-  version "0.0.5"
-  resolved "https://github.com/briehl/narrative-utils#35b7d95fc57671b157b6afa37065eeb6791026f5"
+"@kbase/narrative-utils@https://github.com/kbaseIncubator/narrative-utils":
+  version "0.0.6"
+  uid a88354b8aa2a6147bbe103063251a06a6d9f1b86
+  resolved "https://github.com/kbaseIncubator/narrative-utils#a88354b8aa2a6147bbe103063251a06a6d9f1b86"
   dependencies:
     bluebird "^3.5.3"
     moment "^2.24.0"
@@ -786,9 +787,9 @@ minimist@^1.2.0, minimist@~1.2.0:
   integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
 
 moment@^2.24.0:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 node-fetch@^1.0.1:
   version "1.7.3"
